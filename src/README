@@ -1,0 +1,60 @@
+idopinto12
+206483620
+
+-> Usage of Collections
+    HashSet: (Shell class) I used HashSet<Character> to hold the characters to render with.
+             The reason for this choice is that it doesn't mean anything to have same characters,
+              because it won't affect
+             the render. with this in mind, it is clear why we need data structure that has no repetitions
+             when order doesn't matter. lucky for us, hash set meets all the requirements with efficiency.
+
+    HashMap: (BrightnessImgCharMatcher class) I used  a HashMap<Image,float>  to store the sub-images' brightness value.
+              note that calculating each time brightness values is very expensive in runtime.
+              we want to reduce that time complexity and in order to achieve it I used this hashmap that
+              represents cache
+              and now we will need to calculate much less and hopefully the time-complexity has improved.
+
+-> Algorithms Implementation:
+    -> uniqueMorseRepresentations:
+        Our job is to count the # of unique code morse representations of given word list.
+        The strategy for accomplish that is:
+        1. create string array A which for every i in A -> A[i] is the morse code representation of char(97 + i)
+        in range [a-z]
+        2. create String HashSet that will hold distinct strings of morse codes.
+        3. for every word in words:
+            3.a generate morse code and add to the set
+        3. return the size of the set
+
+        note that the size of the set is guaranteed to be the desired result.
+
+        Time-Complexity:
+            steps (1) and (2) -> O(1)
+            step (3.a) -> O(len(word))
+            step (3) -> O(sum(len(words[i])) for every 0<=i< len(words)
+            let S = sum(len(words[i])
+            so in total we get O(S)
+
+    -> findDuplicate
+          note that  there is a duplicate iff there is cycle in the path created by
+                numList[0] -> numList[numList[0]] -> numList[numList[numList[0]]] -> ...
+                and if cycle does indeed exit then the duplicate is the first number that created the cycle.
+                the reason for that is that we refer to the array values as pointers to the array's indexes,
+                so if x is a duplicate then multiply nodes in the graph point to x.
+                the strategy is as follows:
+                1. find the cycle
+                2. find the first number that created the cycle
+                3.return this number.
+
+                in order to implement this we init two pointers (indexes) s.t one is moving one step at a time
+                and the second moving two steps. so if they're equal then we are in cycle.
+                but we don't know yet who created this cycle.
+                so we init again the first pointer and start the race again.
+                when they meet again we can relax and say very comfortably that we found our sneaky duplicate.
+
+            Time-Complexity:
+            let n = len(numList)
+                step (1) ->  O(n) ,since none of the pointers will complete 2 cycles or more.
+                step (2) -> O(n) , since  they travel less then n indexes until they meet again.
+                total -> O(n)
+            Space-Complexity:
+                O(1) because there are only two pointers (integers)
